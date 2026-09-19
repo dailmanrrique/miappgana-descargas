@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiAppGana - Gana recompensas por tu tiempo</title>
+<meta name="description" content="MiAppGana te paga por completar encuestas, ver videos y jugar. Descarga la app y empieza a ganar hoy.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+<style>
+  /* ====== RESET Y BASE ====== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    background: #F7F5FF;
+    color: #2D2A4A;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ====== VARIABLES DE COLOR PASTEL ====== */
+  :root {
+    --pastel-blue: #B3D9FF;
+    --pastel-pink: #FFD1DC;
+    --pastel-green: #B5EAD7;
+    --pastel-yellow: #FFF1B5;
+    --pastel-purple: #D5C6E0;
+    --purple: #5A4FCF;
+    --purple-light: #7B6CF0;
+    --green: #6FCF97;
+    --green-dark: #5AB380;
+    --text-dark: #2D2A4A;
+    --text-gray: #8A85A8;
+    --bg-cream: #FCF9F5;
+  }
+
+  /* ====== NAVBAR ====== */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(90, 79, 207, 0.08);
+    z-index: 1000;
+    padding: 16px 0;
+  }
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--purple);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+  .logo-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 4px 8px rgba(90, 79, 207, 0.3));
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-gray);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--purple); }
+
+  /* ====== HERO ====== */
+  .hero {
+    background: linear-gradient(135deg, #B3D9FF 0%, #D5C6E0 50%, #FFD1DC 100%);
+    padding: 140px 24px 80px;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+    bottom: -150px;
+    left: -100px;
+    border-radius: 50%;
+  }
+  .hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-text h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -1.5px;
+  }
+  .hero-text h1 span {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-text p {
+    font-size: 18px;
+    color: #4A4763;
+    margin-bottom: 36px;
+    max-width: 500px;
+    line-height: 1.7;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+    color: #FFFFFF;
+    padding: 18px 40px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 17px;
+    box-shadow: 0 10px 30px rgba(111, 207, 151, 0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-download:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(111, 207, 151, 0.55);
+  }
+  .btn-download svg {
+    width: 24px;
+    height: 24px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--purple);
+    margin-bottom: 24px;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ====== MOCKUP DEL TELÉFONO ====== */
+  .phone-mockup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .phone-frame {
+    width: 300px;
+    height: 600px;
+    background: linear-gradient(135deg, #1E1E2E 0%, #2A2A3E 100%);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 
+      0 30px 80px rgba(90, 79, 207, 0.35),
+      0 0 0 2px rgba(255, 255, 255, 0.1) inset;
+    position: relative;
+    transform: rotate(-5deg);
+    transition: transform 0.5s;
+  }
+  .phone-frame:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 24px;
+    background: #1E1E2E;
+    border-radius: 20px;
+    z-index: 2;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #F7F5FF 0%, #FFFFFF 100%);
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 20px 20px;
+  }
+  .phone-screen .screen-header {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+  }
+  .phone-screen .screen-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+  }
+  .phone-screen .screen-card {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .phone-screen .screen-card .label {
+    font-size: 11px;
+    opacity: 0.85;
+    margin-bottom: 4px;
+  }
+  .phone-screen .screen-card .amount {
+    font-size: 32px;
+    font-weight: 800;
+  }
+  .phone-screen .screen-item {
+    background: #FFFFFF;
+    padding: 14px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(90, 79, 207, 0.08);
+  }
+  .phone-screen .screen-item .icon {
+    font-size: 24px;
+  }
+  .phone-screen .screen-item .info { flex: 1; }
+  .phone-screen .screen-item .info .name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+  .phone-screen .screen-item .info .desc {
+    font-size: 10px;
+    color: var(--text-gray);
+  }
+  .phone-screen .screen-item .reward {
+    background: var(--pastel-green);
+    color: #2D2A4A;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* Decoración flotante */
+  .float-emoji {
+    position: absolute;
+    font-size: 40px;
+    animation: float 6s ease-in-out infinite;
+    filter: drop-shadow(0 6px 12px rgba(90, 79, 207, 0.2));
+  }
+  .float-emoji.e1 { top: 10%; left: 5%; animation-delay: 0s; }
+  .float-emoji.e2 { top: 60%; left: 8%; animation-delay: 1.5s; }
+  .float-emoji.e3 { top: 20%; right: 5%; animation-delay: 3s; }
+  .float-emoji.e4 { bottom: 15%; right: 8%; animation-delay: 2s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  /* ====== SECCIONES COMUNES ====== */
+  section {
+    padding: 80px 24px;
+  }
+  .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .section-header h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+    letter-spacing: -0.8px;
+  }
+  .section-header p {
+    font-size: 17px;
+    color: var(--text-gray);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .section-tag {
+    display: inline-block;
+    background: var(--pastel-purple);
+    color: var(--text-dark);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ====== FEATURES (CÓMO GANAR) ====== */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .feature-card {
+    background: #FFFFFF;
+    padding: 32px 28px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(90, 79, 207, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+  }
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(90, 79, 207, 0.15);
+    border-color: var(--pastel-purple);
+  }
+  .feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+    line-height: 1;
+  }
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+  }
+  .feature-card p {
+    color: var(--text-gray);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ====== SECCIÓN DE GANANCIAS (DEMO) ====== */
+  .earnings-section {
+    background: linear-gradient(135deg, #FCF9F5 0%, #F7F5FF 100%);
+  }
+  .earnings-demo {
+    background: #FFFFFF;
+    border-radius: 32px;
+    padding: 48px;
+    box-shadow: 0 20px 60px rgba(90, 79, 207, 0.12);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .earnings-demo-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px dashed rgba(90, 79, 207, 0.1);
+  }
+  .earnings-demo-header h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .earnings-balance {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+    color: #FFFFFF;
+    padding: 16px 28px;
+    border-radius: 20px;
+    text-align: right;
+  }
+  .earnings-balance .label {
+    font-size: 12px;
+    opacity: 0.85;
+  }
+  .earnings-balance .amount {
+    font-size: 28px;
+    font-weight: 800;
+  }
+  .earning-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--bg-cream);
+    margin-bottom: 12px;
+    transition: transform 0.2s;
+  }
+  .earning-item:hover {
+    transform: translateX(8px);
+  }
+  .earning-item .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .earning-item .icon.purple { background: var(--pastel-purple); }
+  .earning-item .icon.blue { background: var(--pastel-blue); }
+  .earning-item .icon.green { background: var(--pastel-green); }
+  .earning-item .info { flex: 1; }
+  .earning-item .info h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+  }
+  .earning-item .info p {
+    font-size: 13px;
+    color: var(--text-gray);
+  }
+  .earning-item .reward {
+    background: var(--pastel-green);
+    color: var(--text-dark);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  /* ====== SECCIÓN DE NIVELES ====== */
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .level-card {
+    background: #FFFFFF;
+    padding: 24px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(90, 79, 207, 0.08);
+    transition: transform 0.3s;
+    border: 2px solid transparent;
+  }
+  .level-card:hover {
+    transform: translateY(-6px);
+  }
+  .level-card .medal {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .level-card .name {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+  }
+  .level-card .days {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+  }
+  .level-card .limit {
+    background: var(--pastel-yellow);
+    color: var(--text-dark);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+  }
+  .level-card.bronze { border-color: #D4A574; }
+  .level-card.silver { border-color: #B8B8C8; }
+  .level-card.gold { border-color: #F4C430; }
+  .level-card.platinum { border-color: #7EC8E3; }
+  .level-card.diamond { border-color: #5A4FCF; }
+
+  /* ====== CTA FINAL ====== */
+  .cta-final {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+    color: #FFFFFF;
+    text-align: center;
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-final::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    border-radius: 50%;
+  }
+  .cta-final h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -0.8px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-final p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-final .btn-download {
+    background: #FFFFFF;
+    color: var(--purple);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+  }
+  .cta-final .btn-download:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ====== FOOTER ====== */
+  footer {
+    background: #1E1E2E;
+    color: #FFFFFF;
+    padding: 48px 24px 24px;
+    text-align: center;
+  }
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-logo {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: #8A85A8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: #FFFFFF; }
+  .footer-copy {
+    color: #8A85A8;
+    font-size: 13px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 24px;
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 900px) {
+    .hero-container {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero-text p { margin-left: auto; margin-right: auto; }
+    .hero-buttons { justify-content: center; }
+    .phone-mockup { margin-top: 40px; }
+    .phone-frame { transform: rotate(0deg); }
+    .nav-links { display: none; }
+    .earnings-demo { padding: 32px 24px; }
+    .earnings-demo-header { flex-direction: column; gap: 16px; text-align: center; }
+    .earnings-balance { text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .btn-download {
+      padding: 16px 32px;
+      font-size: 16px;
+      width: 100%;
+      justify-content: center;
+    }
+    .phone-frame { width: 260px; height: 520px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="#" class="logo">
+      <span class="logo-icon">💜</span>
+      MiAppGana
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Cómo ganar</a></li>
+      <li><a href="#levels">Niveles</a></li>
+      <li><a href="#download">Descargar</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <span class="float-emoji e1">💰</span>
+  <span class="float-emoji e2">🎮</span>
+  <span class="float-emoji e3">📱</span>
+  <span class="float-emoji e4">✨</span>
+
+  <div class="hero-container">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span>✨</span>
+        <span>Ya disponible para Android</span>
+      </div>
+      <h1>Gana recompensas por <span>tu tiempo</span></h1>
+      <p>
+        Completa encuestas, mira videos y juega. Retira tus ganancias en criptomonedas o dinero digital. Simple, rápido y desde tu celular.
+      </p>
+      <div class="hero-buttons">
+        <!-- ✅ BOTÓN DEL HERO: apunta al index de GitHub Pages -->
+        <a href="https://dailmanrrique.github.io/miappgana-descargas/" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
+          </svg>
+          Descargar App
+        </a>
+      </div>
+    </div>
+
+    <div class="phone-mockup">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="screen-header">Bienvenido de vuelta 👋</div>
+          <div class="screen-title">Hola, Usuario</div>
+
+          <div class="screen-card">
+            <div class="label">Tu saldo</div>
+            <div class="amount">$12.50</div>
+          </div>
+
+          <div class="screen-item">
+            <span class="icon">📋</span>
+            <div class="info">
+              <div class="name">Encuesta rápida</div>
+              <div class="desc">3 minutos</div>
+            </div>
+            <span class="reward">+$0.50</span>
+          </div>
+
+          <div class="screen-item">
+            <span class="icon">🎬</span>
+            <div class="info">
+              <div class="name">Ver video</div>
+              <div class="desc">30 segundos</div>
+            </div>
+            <span class="reward">+$0.10</span>
+          </div>
+
+          <div class="screen-item">
+            <span class="icon">🎮</span>
+            <div class="info">
+              <div class="name">Jugar Snake</div>
+              <div class="desc">Por 5 minutos</div>
+            </div>
+            <span class="reward">+$0.25</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FEATURES ====== -->
+<section id="features">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Cómo funciona</span>
+      <h2>3 formas de ganar dinero</h2>
+      <p>Elige la que más te guste y empieza a acumular saldo desde el primer día.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📋</span>
+        <h3>Encuestas</h3>
+        <p>Responde encuestas cortas sobre productos, series, música y más. Cada encuesta te paga entre $0.20 y $1.00 según la duración.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🎬</span>
+        <h3>Videos cortos</h3>
+        <p>Mira videos de anunciantes por 30-60 segundos. Rápido, simple y acumulas saldo sin darte cuenta.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🎮</span>
+        <h3>Juegos retro</h3>
+        <p>Snake, Tetris, Pac-Man y Mario. Juega por diversión y gana recompensas por tu tiempo de juego.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== EARNINGS DEMO ====== -->
+<section class="earnings-section">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Así se ve</span>
+      <h2>Tu panel de ganancias</h2>
+      <p>Visualiza tu saldo crecer en tiempo real. Retira cuando quieras, sin mínimos.</p>
+    </div>
+
+    <div class="earnings-demo">
+      <div class="earnings-demo-header">
+        <div>
+          <h3>Hola, Juan 👋</h3>
+          <p style="color:#8A85A8; font-size:14px; margin-top:4px;">Nivel: Bronce 🥉</p>
+        </div>
+        <div class="earnings-balance">
+          <div class="label">Tu saldo disponible</div>
+          <div class="amount">$12.50</div>
+        </div>
+      </div>
+
+      <div class="earning-item">
+        <div class="icon purple">📋</div>
+        <div class="info">
+          <h4>Encuesta sobre música</h4>
+          <p>Completada hoy · 4 min</p>
+        </div>
+        <span class="reward">+$0.50</span>
+      </div>
+
+      <div class="earning-item">
+        <div class="icon blue">🎬</div>
+        <div class="info">
+          <h4>Video de anunciante</h4>
+          <p>Completado hoy · 30 seg</p>
+        </div>
+        <span class="reward">+$0.10</span>
+      </div>
+
+      <div class="earning-item">
+        <div class="icon green">🎮</div>
+        <div class="info">
+          <h4>Partida de Snake</h4>
+          <p>Completado hoy · 5 min</p>
+        </div>
+        <span class="reward">+$0.25</span>
+      </div>
+
+      <div class="earning-item">
+        <div class="icon purple">🎰</div>
+        <div class="info">
+          <h4>Ruleta diaria</h4>
+          <p>Jugada hoy</p>
+        </div>
+        <span class="reward">+$2.50</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== LEVELS ====== -->
+<section id="levels">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Programa de niveles</span>
+      <h2>Mientras más tiempo, más ganas</h2>
+      <p>Tu límite diario de ganancias aumenta con cada nivel que desbloqueas.</p>
+    </div>
+
+    <div class="levels-grid">
+      <div class="level-card bronze">
+        <span class="medal">🥉</span>
+        <div class="name">Bronce</div>
+        <div class="days">Primeros 30 días</div>
+        <div class="limit">Hasta $3.00/día</div>
+      </div>
+
+      <div class="level-card silver">
+        <span class="medal">🥈</span>
+        <div class="name">Plata</div>
+        <div class="days">30 - 60 días</div>
+        <div class="limit">Hasta $3.50/día</div>
+      </div>
+
+      <div class="level-card gold">
+        <span class="medal">🥇</span>
+        <div class="name">Oro</div>
+        <div class="days">60 - 90 días</div>
+        <div class="limit">Hasta $4.00/día</div>
+      </div>
+
+      <div class="level-card platinum">
+        <span class="medal">💎</span>
+        <div class="name">Platino</div>
+        <div class="days">90 - 120 días</div>
+        <div class="limit">Hasta $4.50/día</div>
+      </div>
+
+      <div class="level-card diamond">
+        <span class="medal">👑</span>
+        <div class="name">Diamante</div>
+        <div class="days">120+ días</div>
+        <div class="limit">Hasta $5.00/día</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CTA FINAL / DESCARGA ====== -->
+<section id="download" class="cta-final">
+  <h2>¿Listo para empezar a ganar? 💜</h2>
+  <p>Descarga MiAppGana gratis y comienza a acumular recompensas desde hoy.</p>
+
+  <!-- ✅ BOTÓN DEL CTA FINAL: apunta al index de GitHub Pages -->
+  <a href="https://dailmanrrique.github.io/miappgana-descargas/" class="btn-download">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
+    </svg>
+    Descargar APK
+  </a>
+
+  <p style="margin-top:24px; font-size:13px; opacity:0.75;">
+    Requiere Android 7.0 o superior · 25 MB aprox.
+  </p>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-logo">
+      <span>💜</span>
+      MiAppGana
+    </div>
+    <div class="footer-links">
+      <a href="#features">Cómo ganar</a>
+      <a href="#levels">Niveles</a>
+      <a href="#download">Descargar</a>
+      <a href="mailto:soporte@miappgana.freedev.app">Contacto</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 MiAppGana. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
